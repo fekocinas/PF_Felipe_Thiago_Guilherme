@@ -1,0 +1,337 @@
+import pygame
+import sys
+from pygame.locals import *
+from random import randrange
+import random
+import os
+
+ALPHA= (0, 255, 0)
+
+class Bola(pygame.sprite.Sprite):
+  
+    def __init__(self, arquivo_imagem, pos_x, pos_y, vel_x, vel_y):
+      pygame.sprite.Sprite.__init__(self)
+      self.vx = vel_x
+      self.vy = vel_y
+      self.images = []
+      self.frames = 4
+      for i in range(1,5):
+            img = pygame.image.load(os.path.join('BOLA ' + str(i) + '.png')).convert_alpha()
+            img = pygame.transform.scale(img, (100, 100))
+            img.set_colorkey(ALPHA)
+            self.images.append(img)
+            self.image = self.images[0]
+            self.rect  = self.image.get_rect()
+      self.rect = self.image.get_rect()
+      self.rect.x = pos_x
+      self.rect.y = pos_y
+      self.migue = False
+      self.forca = 0
+      self.vel_x = 0
+      self.vel_y = 0
+      self.angulo = 0
+      self.movendo = False
+    
+    def move(self):
+      pressed_keys = pygame.key.get_pressed()
+#      self.rect.x += self.vx
+      if not pressed_keys[K_SPACE]: 
+          if self.migue:
+              self.rect.y -= self.vy
+              if self.rect.y <= 60:
+                  self.migue = False
+          if not self.migue:
+              self.rect.y += self.vy
+              if self.rect.y >= 480:
+                  self.migue = True
+      if pressed_keys[K_SPACE]:
+          self.vy = 0
+
+class Bola_AZUL(pygame.sprite.Sprite):
+  
+    def __init__(self, arquivo_imagem, pos_x, pos_y, vel_x, vel_y):
+      pygame.sprite.Sprite.__init__(self)
+      self.vx = vel_x
+      self.vy = vel_y
+      self.images = []
+      self.frames = 4
+      for i in range(1,5):
+            img = pygame.image.load(os.path.join('BOLA_AZUL ' + str(i) + '.png')).convert_alpha()
+            img = pygame.transform.scale(img, (100, 100))
+            img.set_colorkey(ALPHA)
+            self.images.append(img)
+            self.image = self.images[0]
+            self.rect  = self.image.get_rect()
+      self.rect = self.image.get_rect()
+      self.rect.x = pos_x
+      self.rect.y = pos_y
+      self.migue = False
+      self.forca = 0
+      self.vel_x = 0
+      self.vel_y = 0
+      self.angulo = 0
+      self.movendo = False
+    
+    def move(self):
+      pressed_keys = pygame.key.get_pressed()
+#      self.rect.x += self.vx
+      if not pressed_keys[K_SPACE]: 
+          if self.migue:
+              self.rect.y -= self.vy
+              if self.rect.y <= 60:
+                  self.migue = False
+          if not self.migue:
+              self.rect.y += self.vy
+              if self.rect.y >= 480:
+                  self.migue = True
+      if pressed_keys[K_SPACE]:
+          self.vy = 0
+
+class Copo(pygame.sprite.Sprite):
+    
+    def __init__(self, arquivo_imagem, pos_x, pos_y):
+      pygame.sprite.Sprite.__init__(self)
+      self.image = pygame.image.load(arquivo_imagem)
+      self.rect = self.image.get_rect()
+      self.rect.x = pos_x
+      self.rect.y = pos_y        
+    
+#===========================INICIALIZAÇÃO==============================#
+
+pygame.init()
+tela = pygame.display.set_mode((1291, 594), 0, 32)
+pygame.display.set_caption('Beer Pong')
+
+# carrega imagem de fundo (https://wallpapersafari.com/dark-green-background/)
+fundo = pygame.image.load("MESA 2.png").convert()
+
+# cria bola (http://pngimg.com/download/10405)
+
+bola_azul_group = pygame.sprite.Group()
+bola_azul = Bola_AZUL("BOLA_AZUL 1.png", 1200,255, 30, 10)
+bola_azul_group.add(bola_azul)
+
+bola_laranja_group = pygame.sprite.Group()
+bola_laranja = Bola("BOLA 1.png", 0,255, 30, 10)
+bola_laranja_group.add(bola_laranja)
+
+relogio = pygame.time.Clock()
+
+#Colocar os copos
+copo = Copo("COPO.png", 150,160)
+copo1 = Copo("COPO.png", 150,220)
+copo2 = Copo("COPO.png", 150,280)
+copo3 = Copo("COPO.png", 150,340)
+copo4 = Copo("COPO.png", 200,190)
+copo5 = Copo("COPO.png", 200,250)
+copo6 = Copo("COPO.png", 200,310)
+copo7 = Copo("COPO.png", 250,220)
+copo8 = Copo("COPO.png", 250,280)
+copo9 = Copo("COPO.png", 300,250)
+
+copo_azul = Copo("COPO_AZUL.png", 1050,160)
+copo_azul1 = Copo("COPO_AZUL.png", 1050,220)
+copo_azul2 = Copo("COPO_AZUL.png", 1050,280)
+copo_azul3 = Copo("COPO_AZUL.png", 1050,340)
+copo_azul4 = Copo("COPO_AZUL.png", 1000,190)
+copo_azul5 = Copo("COPO_AZUL.png", 1000,250)
+copo_azul6 = Copo("COPO_AZUL.png", 1000,310)
+copo_azul7 = Copo("COPO_AZUL.png", 950,220)
+copo_azul8 = Copo("COPO_AZUL.png", 950,280)
+copo_azul9 = Copo("COPO_AZUL.png", 900,250)
+
+copo_group = pygame.sprite.Group()
+copo_group.add(copo,copo1,copo2,copo3,copo4,copo5,copo6,copo7,copo8,copo9)
+
+copo_azul_group = pygame.sprite.Group()
+copo_azul_group.add(copo_azul,copo_azul1,copo_azul2,copo_azul3,copo_azul4,copo_azul5,copo_azul6,copo_azul7,copo_azul8,copo_azul9)
+
+
+forca = 0
+forca2 = 0
+
+#=============== PONTUAÇÃO ===================
+
+black = 0,0,0
+
+def Pontos(pontuacao):
+    font = pygame.font.SysFont(None, 25)
+    text = font.render("Copos restntes: " + str(pontuacao), True, black)
+    tela.blit(text,(10,10))
+    
+def Pontos_Laranja(pontuacao):
+    font = pygame.font.SysFont(None, 25)
+    text = font.render("Copos restntes: " + str(pontuacao), True, black)
+    tela.blit(text,(1120,10))
+
+# ===============   LOOPING PRINCIPAL   ===============
+rodando = True
+turno = True
+migue2 = True
+pontos = 0
+pontos_laranja = 0
+
+
+
+while rodando:
+    
+    pressed_keys = pygame.key.get_pressed()
+    tempo = relogio.tick(100)
+      
+    for event in pygame.event.get(): 
+        if event.type == QUIT:
+          rodando = False
+
+    if turno:
+        if not migue2:
+            turno = False
+        bola_laranja.move()
+        
+    if not turno:
+        if migue2:
+            turno = True    
+        bola_azul.move()
+            
+    if migue2:
+        if pressed_keys[K_RIGHT]:
+            forca +=10
+            bola_laranja.movendo = True
+            forca2 = 0
+            if forca==1000:
+                forca-=10
+            if forca==0:
+                forca+=10
+                
+        if not pressed_keys[K_RIGHT]:
+          if bola_laranja.movendo:
+              bola_laranja.vx += forca
+              bola_laranja.rect.x += bola_laranja.vx
+              bola_laranja.movendo = False
+              migue2 = False
+              bola_azul.rect.x = 1200
+              forca2 = 0
+              bola_azul.vy = 8
+              bola_laranja.vx=0
+              
+    if not migue2:  
+        if pressed_keys[K_LEFT]:
+          forca2 -= 10
+          bola_azul.movendo = True
+          forca = 0
+          
+        
+          
+        if not pressed_keys[K_LEFT]:
+          if bola_azul.movendo:
+              bola_azul.vx += forca2
+              bola_azul.rect.x += bola_azul.vx
+              bola_azul.movendo = False
+              migue2 = True
+              bola_laranja.rect.x = 0
+              forca = 0
+              bola_laranja.vy = 8
+              forca2=0
+              bola_azul.vx=0
+                
+    if pygame.sprite.collide_rect(bola_azul,copo):
+        bola_azul.vx=0
+        copo.kill()
+        pontos += 1
+    if pygame.sprite.collide_rect(bola_azul,copo1):
+        bola_azul.vx=0
+        copo1.kill()
+        pontos += 1
+    if pygame.sprite.collide_rect(bola_azul,copo2):
+        bola_azul.vx=0
+        copo2.kill()
+        pontos += 1
+    if pygame.sprite.collide_rect(bola_azul,copo3):
+        bola_azul.vx=0
+        copo3.kill()
+        pontos += 1
+    if pygame.sprite.collide_rect(bola_azul,copo4):
+        bola_azul.vx=0
+        copo4.kill()
+        pontos += 1
+    if pygame.sprite.collide_rect(bola_azul,copo5):
+        bola_azul.vx=0
+        copo5.kill()
+        pontos += 1
+    if pygame.sprite.collide_rect(bola_azul,copo6):
+        bola_azul.vx=0
+        copo6.kill()
+        pontos += 1
+    if pygame.sprite.collide_rect(bola_azul,copo7):
+        bola_azul.vx=0
+        copo7.kill()
+        pontos += 1
+    if pygame.sprite.collide_rect(bola_azul,copo8):
+        bola_azul.vx=0
+        copo8.kill()
+        pontos += 1
+    if pygame.sprite.collide_rect(bola_azul,copo9):
+        bola_azul.vx=0
+        copo9.kill()
+        pontos += 1
+        
+        
+    if pygame.sprite.collide_rect(bola_laranja,copo_azul):
+        bola_laranja.vx=0
+        copo_azul.kill()
+        pontos_laranja += 1
+    if pygame.sprite.collide_rect(bola_laranja,copo_azul1):
+        bola_laranja.vx=0
+        copo_azul1.kill()
+        pontos_laranja += 1
+    if pygame.sprite.collide_rect(bola_laranja,copo_azul2):
+        bola_laranja.vx=0
+        copo_azul2.kill()
+        pontos_laranja += 1
+    if pygame.sprite.collide_rect(bola_laranja,copo_azul3):
+        bola_laranja.vx=0
+        copo_azul3.kill()
+        pontos_laranja += 1
+    if pygame.sprite.collide_rect(bola_laranja,copo_azul4):
+        bola_laranja.vx=0
+        copo_azul4.kill()
+        pontos_laranja += 1
+    if pygame.sprite.collide_rect(bola_laranja,copo_azul5):
+        bola_laranja.vx=0
+        copo_azul5.kill()
+        pontos_laranja += 1
+    if pygame.sprite.collide_rect(bola_laranja,copo_azul6):
+        bola_laranja.vx=0
+        copo_azul6.kill()
+        pontos_laranja += 1
+    if pygame.sprite.collide_rect(bola_laranja,copo_azul7):
+        bola_laranja.vx=0
+        copo_azul7.kill()
+        pontos_laranja += 1
+    if pygame.sprite.collide_rect(bola_laranja,copo_azul8):
+        bola_laranja.vx=0
+        copo_azul8.kill()
+        pontos_laranja += 1
+    if pygame.sprite.collide_rect(bola_laranja,copo_azul9):
+        bola_laranja.vx=0
+        copo_azul9.kill()
+        pontos_laranja += 1
+        
+    pontos_laranja = len(copo_azul_group)
+    pontos = len(copo_group)
+        
+    Pontos_Laranja(pontos_laranja)
+    Pontos(pontos)
+
+    #gera saídas
+    tela.blit(fundo, (0, 0))
+    Pontos(pontos)
+    Pontos_Laranja(pontos_laranja)
+    copo_azul_group.draw(tela)
+    copo_group.draw(tela)
+    bola_azul_group.draw(tela)
+    bola_laranja_group.draw(tela)
+        #coloca a tela na janela
+    pygame.display.update()
+    
+
+pygame.display.quit()
